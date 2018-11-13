@@ -21,3 +21,4 @@ venv/
 !.travis.yml
 !.isort.cfg
 db.sqlite3
+db.sqlite3.bak
