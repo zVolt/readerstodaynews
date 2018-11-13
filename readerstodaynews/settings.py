@@ -84,10 +84,8 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-print(DATABASES)
-if not DEBUG:
-    DATABASES['default'] =  dj_database_url.config()
-print(DATABASES)
+
+DATABASES['default'] =  dj_database_url.config()
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
