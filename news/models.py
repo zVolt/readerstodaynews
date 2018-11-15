@@ -50,14 +50,11 @@ class UserProfile(models.Model):
 class Comment(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     content = models.TextField()
-    last_modified_on = models.DateTimeField()
+    last_modified_on = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return '%s: %s' % (self.user.user.username, self.content)
 
-
-class Like(models.Model):
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 
 class Source(models.Model):
     name = models.CharField(max_length=100)
@@ -83,7 +80,7 @@ class Post(models.Model):
     tags = models.ManyToManyField(Tag)
     media_items = models.ManyToManyField(Media)
     comments = models.ManyToManyField(Comment)
-    likes = models.ManyToManyField(Like)
+    likes = models.ManyToManyField(UserProfile)
     share_count = models.IntegerField(default=0)
     
     class Meta:

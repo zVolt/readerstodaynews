@@ -57,16 +57,6 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Comment
         fields = ('content', 'user', 'last_modified_on')
 
-class LikeSerializer(serializers.ModelSerializer):
-    username = serializers.SerializerMethodField(read_only=True)
-    
-    def get_username(self, obj):
-        return obj.user.user.username
-
-    class Meta:
-        model = Like
-        fields = ('username', )
-
 class PostTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = PostType
@@ -86,29 +76,6 @@ class PostListSerializer(serializers.ModelSerializer):
     def get_comments_count(self, post):
         return post.comments.count()
 
-    def create(self, validated_data):
-        # Tags
-        tags_data = validated_data.pop('tags')
-        tags_names = [td.get('name') for td in tags_data]
-        tags = Tag.objects.filter(name__in=tags_names)
-        # Modified by
-        user = BaseUser.objects.get(pk=1)
-
-        # Media Items
-        media_data = validated_data.pop('media_items')
-        print(validated_data)
-        media_items = []
-        for md in media_data:
-            media_type_name = md.pop('media_type').get('name')
-            mt = MediaType.objects.filter(name=media_type_name).first()
-            media = Media.objects.create(last_modified_by=user, media_type=mt, **md)
-            media.save()
-            media_items.append(media)
-        post = Post.objects.create(last_modified_by=user, **validated_data)
-        post.tags.set(tags)
-        post.media_items.set(media_items)
-        return post
-
     class Meta:
         model = Post
         # fields = ('title', 'summary', 'content', 'source', 'tags', 'media_items', 'last_modified_on')
@@ -119,8 +86,38 @@ class PostSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True)
     media_items = MediaSerializer(many=True)
     comments = CommentSerializer(many=True)
-    likes = LikeSerializer(many=True)
-    source = SourceSerializer(read_only=True)
+    likes = UserProfileSerializer(many=True)
+    source = SourceSerializer()
+    post_type = PostTypeSerializer()
+
     class Meta:
         model = Post
-        fields = ('id', 'title', 'summary', 'source', 'content' ,'tags', 'media_items', 'last_modified_on', 'likes', 'comments', 'share_count')
+        fields = ('id', 'title', 'summary', 'source', 'content' ,'tags', 'media_items', 'last_modified_on', 'likes', 'comments', 'share_count', 'post_type')
+
+    def create(self, validated_data):
+        # Tags
+        tags_data = validated_data.pop('tags')
+        tags_names = [td.get('name') for td in tags_data]
+        tags = Tag.objects.filter(name__in=tags_names)
+        # Modified by
+        user = BaseUser.objects.get(pk=1)
+
+        # Media Items
+        media_data = validated_data.pop('media_items')
+        media_items = []
+        for md in media_data:
+            media_type_name = md.pop('media_type').get('name')
+            mt = MediaType.objects.filter(name=media_type_name).first()
+            media = Media.objects.create(last_modified_by=user, media_type=mt, **md)
+            media.save()
+            media_items.append(media)
+        validated_data.pop('likes')
+        validated_data.pop('comments')
+        post_type = validated_data.pop('post_type')
+        post_type = PostType.objects.filter(name=post_type.get('name')).first()
+        source = validated_data.pop('source')
+        source = Source.objects.filter(name=source.get('name')).first()
+        post = Post.objects.create(post_type=post_type, last_modified_by=user, source=source, **validated_data)
+        post.tags.set(tags)
+        post.media_items.set(media_items)
+        return post

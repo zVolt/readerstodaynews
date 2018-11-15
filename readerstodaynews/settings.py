@@ -140,7 +140,15 @@ admin.sites.AdminSite.site_title = 'Reader\'s Today News admin'
 # REST Settings
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 5
+    'PAGE_SIZE': 5,
+    
+    # 'DEFAULT_AUTHENTICATION_CLASSES': (
+    #     'rest_framework.authentication.TokenAuthentication',
+    # ),
+
+    # 'DEFAULT_PERMISSION_CLASSES': (
+    #     'rest_framework.permissions.IsAuthenticated', 
+    # )
 }
 
 # Cloudinary settings
@@ -149,3 +157,16 @@ CLOUDINARY = {
   'api_key': os.getenv('CLOUDINARY_API_KEY'),  
   'api_secret': os.getenv('CLOUDINARY_API_SECRET'),
 }
+
+# Google Service account
+data = os.getenv('GOOGLE_SERVICE_ACCOUNT_DATA', '')
+GOOGLE_SERVICE_PATH = os.path.join(BASE_DIR, 'google-service.json' if data else 'news-firebase-servicekey.json')
+if data:
+    with open(GOOGLE_SERVICE_PATH, 'w') as fh:
+        fh.write(data)
+
+import firebase_admin
+from firebase_admin import credentials
+
+cred = credentials.Certificate(GOOGLE_SERVICE_PATH)
+news_firebase_app = firebase_admin.initialize_app(cred)
