@@ -9,18 +9,18 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserProfile
-        fields = ('username','profile_pic')
+        fields = ('username','profile_pic', 'id')
         validators = []
 
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = ('name',)
+        fields = ('name', 'id')
 
 class MediaTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = MediaType
-        fields = ('name',)
+        fields = ('name','id')
 
 class SourceSerializer(serializers.ModelSerializer):
     follower_count = serializers.SerializerMethodField(read_only=True)
@@ -30,7 +30,7 @@ class SourceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Source
-        fields = ('name','icon', 'follower_count')
+        fields = ('name','icon', 'follower_count', 'id')
     
     def to_representation(self, instance):
         representation = super(SourceSerializer, self).to_representation(instance)
@@ -42,7 +42,7 @@ class MediaSerializer(serializers.ModelSerializer):
     media_type = MediaTypeSerializer()
     class Meta:
         model = Media
-        fields = ('media_type', 'image', 'video_url', 'title')
+        fields = ('media_type', 'image', 'video_url', 'title', 'id')
         validators = []
 
     def to_representation(self, instance):
@@ -55,12 +55,12 @@ class CommentSerializer(serializers.ModelSerializer):
     user = UserProfileSerializer(read_only=True)
     class Meta:
         model = Comment
-        fields = ('content', 'user', 'last_modified_on')
+        fields = ('content', 'user', 'last_modified_on', 'id')
 
 class PostTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = PostType
-        fields = ('name', )
+        fields = ('name', 'id')
 
 class PostListSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True)
