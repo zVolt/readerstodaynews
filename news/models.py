@@ -85,5 +85,3 @@ class Post(models.Model):
     
     class Meta:
         ordering = ('last_modified_on',)
-
-

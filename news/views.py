@@ -90,7 +90,7 @@ class PostView(APIView):
             ids = [int(_id) for _id in re.split(r'[\s,]+', ids)]
             posts = Post.objects.filter(id__in=ids).all()
         else:
-            posts = Post.objects.all()
+            posts = []
         serializer = self.serializer_class(posts, many=True)
         return Response(serializer.data)
 
@@ -133,6 +133,9 @@ class CommentCreateView(CreateAPIView):
             post.save()
             res['status'] = True
             res.update(dict(comment=CommentSerializer(comment).data))
+        else:
+            res['status'] = False
+            res['details'] = 'no post or user_profile'
         return Response(res)
 
 class LikeCreateView(CreateAPIView):
@@ -140,13 +143,12 @@ class LikeCreateView(CreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request, format=None):
-        data = request.body
+        data = request.data
         res = {}
         if not data:
             res['status'] = False
             res['details'] = 'no post data'
             return Response(res)
-        data = json.loads(data)
         user_profile = UserProfile.objects.filter(user=request.user).first()
         post_id = data.get('post_id')
         post = Post.objects.get(pk=int(post_id))
