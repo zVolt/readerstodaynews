@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block app %}
+{% raw %}
+<div id="app">
+  <div class="ui stackable grid">
+    <!-- breaking news row -->
+    <div class="ui eleven wide column">
+      <div class="ui row basic segment">  
+          <div class="ui negative message">
+            <div class="ui red label">Breaking news</div>
+            This is a breaking news
+            <a href="#">read more...</a>
+          </div>
+          <div class="ui message">
+            <div class="ui blue label">International</div>
+            <a href="#">This is a International news</a>
+          </div>
+        </div>
+    </div>
+    <div class="five wide blue column">
+      <!-- sponser content here -->
+    </div>
+    <!-- breaking news row end-->
+
+    <div class="ui eleven wide column">
+      
+      <!-- article section row-->
+      <div class="ui row">
+        <div class="ui stackable grid">
+          <div class="stretched row">
+            <div class="nine wide column">
+                <img class="ui large image" :src="main_post.media_items[0].image"/>
+                <br/>
+                <div class="ui container">
+                    <div class="ui label" v-for="tag in main_post.tags">{{tag.name}}</div>
+                </div>
+                <div class="ui huge header" href="#">{{main_post.title}}</div>
+                <div>
+                    <a href="#" class="ui icon button">{{main_post.likes_count}} <i class="thumbs up outline icon"></i> Like</a>
+                    <a href="#" class="ui icon button">{{main_post.comments_count}} <i class="comments outline icon"></i> Comment</a>
+                </div>
+                <p class="ui text">{{main_post.content}}</p>
+            </div>
+            <div class="seven wide column">
+              <div class="ui container" v-for="post in primary_posts">
+                  <img class="ui large image" :src="post.media_items[0].image"/>
+                  <br/>
+                  <div>
+                      <div class="ui label" v-for="tag in post.tags">{{tag.name}}</div>
+                  </div>
+                  <div class="ui huge header" href="#">{{post.title}}</div>
+                  <a href="#" class="ui mini compact icon button">{{post.likes_count}} <i class="thumbs up outline icon"></i> Like</a>
+                  <a href="#" class="ui mini compact icon button">{{post.comments_count}} <i class="comments outline icon"></i> Comment</a>
+                  <hr/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ui five wide red column">
+      <!-- top news by tags-->
+      <div class="ui items">
+        <div v-for="tag in top_tags" class="item">
+            <div class="ui tiny image">
+              <img class="image" src="https://semantic-ui.com/images/avatar/large/jenny.jpg">
+            </div>
+            <div class="content">
+              <a class="header">{{tag.name}}</a>
+              <div class="meta">
+                <span>{{tag.description}}</span>
+              </div>
+              <div class="description">
+                <p></p>
+              </div>
+            </div> 
+        </div>
+      </div>
+    </div>
+    <div class="ui five wide column" v-for="post in old_posts">
+        <img class="ui large image" :src="post.media_items[0].image"/>
+        <br/>
+        <div>
+            <div class="ui label" v-for="tag in post.tags">{{tag.name}}</div>
+        </div>
+        <div class="ui header" href="#">{{post.title}}</div>
+        <a href="#" class="ui mini compact icon button">{{post.likes_count}} <i class="thumbs up outline icon"></i> Like</a>
+        <a href="#" class="ui mini compact icon button">{{post.comments_count}} <i class="comments outline icon"></i> Comment</a>
+      </div>
+  </div>
+</div>
+{% endraw %}
+{% endblock %}
+
+{% block script %}
+<script src="{{ static('js/index.js') }}"></script>
+{% endblock %}
