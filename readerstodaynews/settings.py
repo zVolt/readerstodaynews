@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    'news',
+    'api',
     'frontend'
 ]
 
@@ -58,7 +58,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'readerstodaynews.urls'
 
 TEMPLATES = [
-    {
+     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
@@ -69,6 +69,17 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+        },
+    },
+    {
+        'BACKEND': 'django.template.backends.jinja2.Jinja2',
+        'DIRS': [
+            os.path.join(BASE_DIR, 'frontend', 'templates', 'frontend')
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'environment': 'readerstodaynews.jinja2.environment'
+            
         },
     },
 ]
@@ -157,16 +168,3 @@ CLOUDINARY = {
   'api_key': os.getenv('CLOUDINARY_API_KEY'),  
   'api_secret': os.getenv('CLOUDINARY_API_SECRET'),
 }
-
-# Google Service account
-data = os.getenv('GOOGLE_SERVICE_ACCOUNT_DATA', '')
-GOOGLE_SERVICE_PATH = os.path.join(BASE_DIR, 'google-service.json' if data else 'news-firebase-servicekey.json')
-if data:
-    with open(GOOGLE_SERVICE_PATH, 'w') as fh:
-        fh.write(data)
-
-import firebase_admin
-from firebase_admin import credentials
-
-cred = credentials.Certificate(GOOGLE_SERVICE_PATH)
-news_firebase_app = firebase_admin.initialize_app(cred)

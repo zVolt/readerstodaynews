@@ -35,3 +35,6 @@ for _ in range(50):
 			if data:
 				res = requests.post('http://localhost:8000/api/post/', json=[data])
 				print res.ok
+
+
+# DATABASE_URL=sqlite:////home/zeeshan/repos/readerstoday_backend/db.sqlite3
