@@ -10,9 +10,7 @@ var app = new Vue({
         old_posts: [],
     },
     created: function(){
-      // this.get_posts()
-      console.log(posts)
-      this.posts_updated(posts)
+      this.get_posts()
       this.get_tags()
     },
     updated: function(){
@@ -33,7 +31,6 @@ var app = new Vue({
         var vm = this
         axios.get('/api/tag/list').then(
           response=>{
-            console.log(response)
             vm.tags = response.data
           },
           error=>{
@@ -44,9 +41,7 @@ var app = new Vue({
         var vm = this
         axios.get('/api/post/list?limit=30').then(
         response=>{
-          console.log(response)
-          var all_posts = response.data.results
-          
+          vm.posts_updated(response.data.results)
         },
         error=>{
           console.log(error)
