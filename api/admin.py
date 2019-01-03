@@ -33,6 +33,8 @@ class MediaAdmin(BaseAdmin):
 @admin.register(Post)
 class PostAdmin(BaseAdmin):
     list_display = ('summary', 'title', 'like_count', 'comment_count')
+    search_fields = ('title', 'summary')
+    list_filter = ('last_modified_on', 'last_modified_by', 'tags')
 
     def like_count(self, obj):
         return obj.likes.count()
