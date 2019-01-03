@@ -58,7 +58,7 @@ class Comment(models.Model):
 
 class Source(models.Model):
     name = models.CharField(max_length=100)
-    followers = models.ManyToManyField(UserProfile)
+    followers = models.ManyToManyField(UserProfile, blank=True)
     icon = CloudinaryField('image', blank=True)
 
     def __str__(self):
@@ -69,6 +69,9 @@ class PostType(models.Model):
     last_modified_on = models.DateTimeField()
     last_modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.name
+
 class Post(models.Model):
     title = models.CharField(max_length=500)
     summary = models.TextField()
@@ -78,9 +81,9 @@ class Post(models.Model):
     last_modified_on = models.DateTimeField()
     last_modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tag)
-    media_items = models.ManyToManyField(Media)
-    comments = models.ManyToManyField(Comment)
-    likes = models.ManyToManyField(UserProfile)
+    media_items = models.ManyToManyField(Media, blank=True)
+    comments = models.ManyToManyField(Comment, blank=True)
+    likes = models.ManyToManyField(UserProfile, blank=True)
     share_count = models.IntegerField(default=0)
     
     class Meta:
