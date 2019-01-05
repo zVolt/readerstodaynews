@@ -17,8 +17,8 @@ var app = new Vue({
         })
     },
     created: function(){
-      //this.get_posts()
-      this.posts_updated(posts)
+      this.get_posts()
+      // this.posts_updated(posts)
       this.get_tags()
     },
     computed: {
