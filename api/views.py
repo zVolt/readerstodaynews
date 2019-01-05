@@ -6,9 +6,9 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from django.http import HttpResponse, JsonResponse
-from .models import Post, Tag, UserProfile, Comment
+from .models import Post, Tag, UserProfile, Comment, MenuItem
 from django.contrib.auth.models import User
-from .serializers import PostSerializer, PostListSerializer, TagSerializer, CommentSerializer
+from .serializers import PostSerializer, PostListSerializer, TagSerializer, CommentSerializer, MenuSerializer
 from reprlib import repr
 # Create your views here.
 from rest_framework.views import APIView
@@ -51,6 +51,10 @@ class CustomAuthToken(ObtainAuthToken):
             res['photo_url'] = user_profile.profile_pic
             res['token'] = token.key
         return Response(res)
+
+class MenuItemListView(ListCreateAPIView):
+    queryset = MenuItem.objects.all()
+    serializer_class = MenuSerializer
 
 class TagListView(ListCreateAPIView):
     queryset = Tag.objects.all()

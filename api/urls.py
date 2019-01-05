@@ -8,4 +8,5 @@ urlpatterns = [
     url('tag/list', views.TagListView.as_view()),
     url('comment/', views.CommentCreateView.as_view()),
     url('like/', views.LikeCreateView.as_view()),
+    url('menu/', views.MenuItemListView.as_view()),
 ]

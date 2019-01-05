@@ -8,65 +8,156 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   
-  <link rel="manifest" href="site.webmanifest">
   <link rel="apple-touch-icon" href="{{ static('img/icon.png')}}">
   <!-- Place favicon.ico in the root directory -->
-  
-  <link rel="stylesheet" href="{{ static('css/normalize.css') }}">
-  <link rel="stylesheet" href="{{ static('css/main.css') }}">
-  
-  <link href="https://fonts.googleapis.com/css?family=Mukta|Noto+Sans" rel="stylesheet">
+  <!-- <link href="https://fonts.googleapis.com/css?family=Mukta|Noto+Sans" rel="stylesheet"> -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" />
+  <link rel="stylesheet" href="{{ static('css/normalize.css') }}">
+  <link rel="stylesheet" href="{{ static('css/base.css') }}">
+  <link rel="stylesheet" href="{{ static('css/main.css') }}">
+  {%block style%}
+  {%endblock%}
+  
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>  
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.5.1/vue-resource.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/visibility.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/sidebar.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/transition.min.js"></script>
+  <script>
+    $(document)
+    .ready(function() {
+      // fix menu when passed
+      $('.masthead')
+        .visibility({
+          once: false,
+          onBottomPassed: function() {
+            $('.fixed.menu').transition('fade in')
+          },
+          onBottomPassedReverse: function() {
+            $('.fixed.menu').transition('fade out')
+          }
+        })
+      $('.fixed.menu').transition('fade out')
+    })
+  </script>
 </head>
 
-<body >
-  <!--[if lte IE 9]>
-    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
-    <![endif]-->
-    
-    <!-- Add your site or application content here -->
-    
-    <div class="ui top attached inverted red menu segment">
-      <div class="item">
-        <div class="ui small basic inverted icon button" id="sidebar-button"><i class="sidebar icon"></i></div>
+<body>
+<!--[if lte IE 9]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+<![endif]-->
+
+<!-- Following Menu -->
+<div class="ui borderless top fixed hidden menu">
+  <div class="ui container" id="menu-fixed">
+    {%raw%}
+      <div class="item header">{{name}}</div>
+      <a class="item" v-for="item in main_items" :href="item.url" :class="{active: item.active}">{{item.name}}</a>
+      <div class="right menu">
+        <div class="item" v-for="item in sec_items">
+          <a class="ui primary button" :href="item.url">{{item.name}}</a>
+        </div>
       </div>
-      <div class="item header">
-        Readers Today News
-      </div>
-    </div>
-    <div class="ui bottom attached segment pushable" >
-      <div class="ui inverted inline vertical sidebar menu">
-        <!-- sidebar content start -->
-        {% raw %}  
-        <div class="ui text container" id="menu">
-          <a class="item" v-for="item in items" :href="item.url" :class="{active: item.active}">
-            {{item.name}}
+    {%endraw%}
+  </div>
+</div>
+
+<!-- Sidebar Menu -->
+<div class="ui vertical inverted sidebar menu">
+  <div class="ui container" id="menu-sidebar">
+    {%raw%}
+      <a class="item" v-for="item in main_items" :href="item.url" :class="{active: item.active}">{{item.name}}</a>
+      <a class="item" v-for="item in sec_items" :href="item.url" :class="{active: item.active}">{{item.name}}</a>
+    {%endraw%}
+  </div>
+</div>
+
+<!-- Page Contents -->
+<div class="pusher">
+  <div class="ui inverted red vertical masthead center aligned segment">
+
+    <div class="ui container" id="menu-main">
+      {%raw%}
+        <div class="ui large secondary inverted pointing menu">
+          <a class="toc item">
+            <i class="sidebar icon"></i>
           </a>
+          <a class="item" v-for="item in main_items" :href="item.url" :class="{active: item.active}">{{item.name}}</a>
+          <div class="right item">
+            <a class="ui inverted button" v-for="item in sec_items" :href="item.url">{{item.name}}</a>
+          </div>
         </div>
-        {% endraw %}
-        <!-- sidebar content end -->
+      {%endraw%}
+    </div>
+    {% block header%}
+    <div class="ui text container">
+      <h1 class="ui inverted header">
+        Reader's Today News
+      </h1>
+      <h2>Stay ahead of time.</h2>
+      <!-- <div class="ui huge primary button">Get Started <i class="right arrow icon"></i></div> -->
+    </div>
+    {% endblock%}
+  </div>
+  <div class="ui basic segment">
+    {%block app%}
+    {%endblock%}
+  </div>
+
+  
+<!-- site content end -->
+</div>
+<div class="ui inverted vertical footer segment">
+  <div class="ui container">
+    <div class="ui stackable inverted divided equal height stackable grid">
+      <div class="three wide column">
+        <h4 class="ui inverted header">About</h4>
+        <div class="ui inverted link list">
+          <a href="#" class="item">Sitemap</a>
+          <a href="#" class="item">Contact Us</a>
+        </div>
       </div>
-      <div class="pusher">
-        <!-- site content start -->
-        <div class="ui container" style="margin-top:2em;">
-            {%block app%}
-            {%endblock%}
+      <div class="three wide column">
+        <h4 class="ui inverted header">Services</h4>
+        <div class="ui inverted link list">
+          <a href="#" class="item">Advertisement</a>
+          <a href="#" class="item">News Publish</a>
         </div>
-        <!-- site content end -->
+      </div>
+      <div class="seven wide column">
+          <h4 class="ui inverted header">Reader's Today News</h4>
+          <a class="ui facebook icon button">
+            <i class="facebook icon"></i>
+          </a>
+          <a class="ui twitter icon button">
+            <i class="twitter icon"></i>
+          </a>
+          <a class="ui google plus icon button">
+            <i class="google plus icon"></i>
+          </a>
+          <a class="ui vk icon button">
+            <i class="vk icon"></i>
+          </a>
+          <a class="ui linkedin icon button">
+            <i class="linkedin icon"></i>
+          </a>
+          <a class="ui instagram icon button">
+            <i class="instagram icon"></i>
+          </a>
+          <a class="ui youtube icon button">
+            <i class="youtube icon"></i>
+          </a>
       </div>
     </div>
-    
-    <script src="{{ static('js/vendor/modernizr-3.6.0.min.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
-    
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
-    
-    <script src="{{ static('js/menu.js') }}"></script>
-    {%block script%}
-        
-    {%endblock%}
-  </body>
-  </html>
+  </div>
+</div>
+<script src="{{ static('js/utils.js') }}"></script>
+<script src="{{ static('js/menu.js') }}"></script>
+{%block script%}
+      
+{%endblock%}
+</body>
+</html>

@@ -12,10 +12,21 @@ class UserProfileSerializer(serializers.ModelSerializer):
         fields = ('username','profile_pic', 'id')
         validators = []
 
+class MenuSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MenuItem
+        fields = ('name', 'id', 'url', 'menu', 'order')
+
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = ('name', 'id')
+        fields = ('name', 'id', 'image')
+
+    def to_representation(self, instance):
+        representation = super(TagSerializer, self).to_representation(instance)
+        if instance.image:
+            representation['image'] = instance.image.url
+        return representation
 
 class MediaTypeSerializer(serializers.ModelSerializer):
     class Meta:

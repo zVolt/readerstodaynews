@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{%block style%}
+{% endblock %}
+
+{%block script%}
+<script>
+var name = "{{name}}";
+</script>
+<script src="{{ static('js/category.js') }}"></script>
+{% endblock %}
+
+{% block header%}
+<h1>Categories</h1>
+{% endblock %}
+
+{% block app %}
+{% raw %}
+<div class="ui container">
+    <div id="app">
+
+    </div>
+</div>
+{% endraw %}
+{% endblock %}

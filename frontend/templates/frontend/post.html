@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{%block style%}
+{% endblock %}
+
+{%block script%}
+<script>
+var postid = parseInt("{{postid}}")
+</script>
+<script src="{{ static('js/post.js') }}"></script>
+{% endblock %}
+
+{% block header%}
+<h1>Reader's Today News</h1>
+{% endblock %}
+
+{% block app %}
+{% raw %}
+<div class="ui container">
+    
+</div>
+{% endraw %}
+{% endblock %}

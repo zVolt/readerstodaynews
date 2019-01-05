@@ -2,50 +2,52 @@
 var menuMixin = {
     data:  function () {
         return {
-            name: 'Readers Today News',
-            items: [{
-                name: 'Home',
-                url: '/index'
-            },{
-                name: 'About',
-                url: '/about'
-            }]
+            name: 'Reader\'s Today News',
+            main_items: [],
+            sec_items: [],
         }
     },
     created: function(){
-        $('.ui.sidebar')
-        .sidebar({
-            context: $('.bottom.segment')
-        })
-        .sidebar('setting', 'transition', 'overlay')
-        .sidebar('attach events', '#sidebar-button');
-    }
-}
-
-var mainMenu = new Vue({
-    el: '#menu',
-    mixins: [menuMixin],
-    data: {
-    },
-    created: function(){
-        this.get_tags()
+        // create sidebar and attach to menu open
+        $('.ui.sidebar').sidebar('attach events', '.toc')
+        this.get_menu_items()
     },
     methods:{
-        add_tags_items_to_menu: function(tags){
-            tags.forEach(tag => {
-                this.items.push({name: tag.name, url: '/section/'+tag.name, active: false})
-            });
-        },
-        get_tags: function(){
+        get_menu_items: function(){
             var vm = this
-            axios.get('/api/tag/list').then(
+            axios.get('/api/menu/').then(
             response=>{
                 console.log(response)
-                vm.add_tags_items_to_menu(response.data)
+                var all_items  = response.data.results
+                all_items.forEach(item => {
+                    if(item.url === window.location.pathname) {
+                        item.active = true
+                    }
+                    if (item.menu==0) {
+                        vm.main_items.push(item)
+                    } else {
+                        vm.sec_items.push(item)
+                    }
+                })
             },
             error=>{
                 console.log(error)
             })
         }
     }
+}
+
+var menu_main = new Vue({
+    el: '#menu-main',
+    mixins: [utilMixin, menuMixin],
+})
+
+var menu_fixed = new Vue({
+    el: '#menu-fixed',
+    mixins: [utilMixin, menuMixin],
+})
+
+var menu_sidebar = new Vue({
+    el: '#menu-sidebar',
+    mixins: [utilMixin, menuMixin],
 })

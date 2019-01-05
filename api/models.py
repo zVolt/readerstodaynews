@@ -5,11 +5,27 @@ from django.contrib.auth.models import User as BaseUser
 from django.db import models
 from cloudinary.models import CloudinaryField
 from django.conf import settings
-from django.utils.safestring import mark_safe
+
+
+class MenuItem(models.Model):
+    name = models.CharField(max_length=50)
+    url = models.CharField(max_length=50)
+    menu = models.IntegerField(default=0, choices=((0, 'Main'), (1, 'Secondary'))) # 0 primary, 1 secondary
+    order = models.IntegerField(default=0) # 0 no order
+    last_modified_on = models.DateTimeField(auto_now=True)
+    last_modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ('order',)
 
 
 class Tag(models.Model):
     name = models.CharField(max_length=50)
+    image = CloudinaryField('image', blank=True)
+    priority = models.IntegerField(default=0)
     last_modified_on = models.DateTimeField(auto_now=True)
     last_modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 

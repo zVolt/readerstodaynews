@@ -1,5 +1,6 @@
 var app = new Vue({
     el: '#app',
+    mixins: [utilMixin],
     data: {
         title: 'Readers Today News',
         tags: [],
@@ -9,15 +10,20 @@ var app = new Vue({
         primary_posts: [],
         old_posts: [],
     },
-    created: function(){
-      this.get_posts()
-      this.get_tags()
-    },
     updated: function(){
+      $('.cat_item')
+        .dimmer({
+          on: 'hover'
+        })
+    },
+    created: function(){
+      //this.get_posts()
+      this.posts_updated(posts)
+      this.get_tags()
     },
     computed: {
       top_tags: function(){
-        return this.tags.splice(0, 5)
+        return this.tags.slice(0, 6)
       }
     },
     methods: {
@@ -46,6 +52,10 @@ var app = new Vue({
         error=>{
           console.log(error)
         })
+      },
+      get_random_color_class: function(){
+        var colors = ['red', 'blue', 'orange', 'yellow', 'olive', 'green', 'teal', 'blue']
+        return colors[Math.floor(Math.random() * colors.length)]
       }
     }
     })

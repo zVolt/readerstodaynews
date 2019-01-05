@@ -16,6 +16,10 @@ class BaseAdmin(admin.ModelAdmin):
         super(BaseAdmin, self).save_model(request, obj, form, change)
 
 
+@admin.register(MenuItem)
+class MenuItemAdmin(BaseAdmin):
+    list_display = ('name', 'url', 'menu','order')
+
 @admin.register(Media)
 class MediaAdmin(BaseAdmin):
     list_display = ('image_thumbnail', 'title')
@@ -54,7 +58,15 @@ class MediaTypeAdmin(BaseAdmin):
 
 @admin.register(Tag)
 class TagAdmin(BaseAdmin):
-    list_display = ('name',)
+    list_display = ('name', 'image_thumbnail')
+
+    def image_thumbnail(self, obj):
+        return mark_safe('<img src="{url}" width={width} height={height} />'.format(
+            url = obj.image.url,
+            width=50,
+            height=50,
+            )
+        )
 
 
 @admin.register(Comment)
