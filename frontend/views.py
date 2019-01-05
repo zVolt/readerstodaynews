@@ -10,6 +10,10 @@ def _get_content(name):
     with open(os.path.join(settings.BASE_DIR,'frontend', 'templates', 'frontend', name+'.html')) as fh:
         return fh.read()
 
-def get_page(request, name='index'):
-    template = get_template(name + '.html')
+def index(request, name='index'):
+    template = get_template('index.html')
+    return HttpResponse(template.render())
+
+def about(request, name='about'):
+    template = get_template('about.html')
     return HttpResponse(template.render())
