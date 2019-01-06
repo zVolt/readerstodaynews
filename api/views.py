@@ -107,7 +107,7 @@ class SingleResultsSetPagination(LimitOffsetPagination):
     default_limit = 3
 
 class PostView(APIView):
-    serializer_class = PostSerializer
+    serializer_class = PostDetailSerializer
 
     def get(self, request, format=None):
         ids = request.query_params.get('ids', '')
