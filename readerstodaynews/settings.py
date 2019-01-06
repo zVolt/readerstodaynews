@@ -144,14 +144,16 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Admin Headings
 from django.contrib import admin
 
-admin.sites.AdminSite.site_header = 'Reader\'s Today News'
-admin.sites.AdminSite.site_title = 'Reader\'s Today News admin'
+admin.sites.AdminSite.site_header = 'Readers Today News'
+admin.sites.AdminSite.site_title = 'Readers Today News admin'
 
 
 # REST Settings
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 5,
+
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
     
     # 'DEFAULT_AUTHENTICATION_CLASSES': (
     #     'rest_framework.authentication.TokenAuthentication',

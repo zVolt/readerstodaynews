@@ -8,7 +8,7 @@ from rest_framework.parsers import JSONParser
 from django.http import HttpResponse, JsonResponse
 from .models import Post, Tag, UserProfile, Comment, MenuItem
 from django.contrib.auth.models import User
-from .serializers import PostSerializer, PostListSerializer, TagSerializer, CommentSerializer, MenuSerializer
+from .serializers import PostDetailSerializer, PostSerializer, TagSerializer, CommentSerializer, MenuSerializer
 from reprlib import repr
 # Create your views here.
 from rest_framework.views import APIView
@@ -72,16 +72,36 @@ class TagListView(ListCreateAPIView):
         return Response(tags)
 
 class PostListView(ListAPIView):
-    serializer_class = PostListSerializer
     pagination_class = LimitOffsetPagination
+
+    def get_serializer_class(self):
+        detailed = self.request.query_params.get('detailed', 'false')
+        detailed = detailed.strip().lower() == 'true'
+        if detailed:
+            return PostDetailSerializer
+        return PostSerializer
 
     def get_queryset(self):
         tags = self.request.query_params.get('tags', '')
+        sources = self.request.query_params.get('sources', '')
+        ids = self.request.query_params.get('ids', '')
+
+        query = Post.objects.all()
         if tags:
-            tag_names = re.split(r'[\s,]+', tags)
-            tag_ids = [t.id for t in Tag.objects.filter(name__in=tag_names)]
-            return Post.objects.filter(tags__in=tag_ids).order_by('-last_modified_on').all()
-        return Post.objects.order_by('-last_modified_on').all()
+            tags = re.split(r'[\s,]+', tags)
+            tag_ids = [t.id for t in Tag.objects.filter(name__in=tags)]
+            query = query.filter(tags__in=tag_ids)
+        
+        if sources:
+            sources = re.split(r'[\s,]+', sources)
+            source_ids = [s.id for s in Source.objects.filter(name__in=sources)]
+            query = query.filter(source__in=source_ids)
+
+        if ids:
+            ids = [int(_id) for _id in re.split(r'[\s,]+', ids)]
+            query = query.filter(id__in=ids)
+
+        return query.order_by('-last_modified_on').all()
 
 class SingleResultsSetPagination(LimitOffsetPagination):
     default_limit = 3

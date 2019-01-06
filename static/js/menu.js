@@ -2,7 +2,7 @@
 var menuMixin = {
     data:  function () {
         return {
-            name: 'Reader\'s Today News',
+            name: 'Readers Today News',
             main_items: [],
             sec_items: [],
         }

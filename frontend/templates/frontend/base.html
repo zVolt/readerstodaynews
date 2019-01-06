@@ -8,7 +8,9 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   
-  <link rel="apple-touch-icon" href="{{ static('img/icon.png')}}">
+  <link rel="apple-touch-icon" href="{{ static('img/apple-icon.png')}}">
+  <link rel="shortcut icon" type="image/png" href="{{ static('img/favicon.ico')}}"/>
+  
   <!-- Place favicon.ico in the root directory -->
   <!-- <link href="https://fonts.googleapis.com/css?family=Mukta|Noto+Sans" rel="stylesheet"> -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" />
@@ -53,7 +55,7 @@
 <!-- Following Menu -->
 <div class="ui borderless top fixed hidden menu">
   <div class="ui container" id="menu-fixed">
-    {%raw%}
+    {% raw %}
       <div class="item header">{{name}}</div>
       <a class="item" v-for="item in main_items" :href="item.url" :class="{active: item.active}">{{item.name}}</a>
       <div class="right menu">
@@ -61,7 +63,7 @@
           <a class="ui primary button" :href="item.url">{{item.name}}</a>
         </div>
       </div>
-    {%endraw%}
+    {% endraw %}
   </div>
 </div>
 
@@ -77,7 +79,7 @@
 
 <!-- Page Contents -->
 <div class="pusher">
-  <div class="ui inverted red vertical masthead center aligned segment">
+  <div class="ui inverted black vertical masthead center aligned segment">
 
     <div class="ui container" id="menu-main">
       {%raw%}
@@ -94,11 +96,9 @@
     </div>
     {% block header%}
     <div class="ui text container">
-      <h1 class="ui inverted header">
-        Reader's Today News
-      </h1>
-      <h2>Stay ahead of time.</h2>
-      <!-- <div class="ui huge primary button">Get Started <i class="right arrow icon"></i></div> -->
+      <div class="ui image">
+        <img src="{{static('img/name_old.png')}}"/>
+      </div>
     </div>
     {% endblock%}
   </div>
@@ -128,14 +128,14 @@
         </div>
       </div>
       <div class="seven wide column">
-          <h4 class="ui inverted header">Reader's Today News</h4>
-          <a class="ui facebook icon button">
+          <h4 class="ui inverted header">Readers Today News</h4>
+          <a class="ui facebook icon button" href="https://www.facebook.com/pg/readerstodaynews">
             <i class="facebook icon"></i>
           </a>
-          <a class="ui twitter icon button">
+          <a class="ui twitter icon button" href="https://twitter.com/ReadersTodayGrp">
             <i class="twitter icon"></i>
           </a>
-          <a class="ui google plus icon button">
+          <!-- <a class="ui google plus icon button">
             <i class="google plus icon"></i>
           </a>
           <a class="ui vk icon button">
@@ -149,7 +149,7 @@
           </a>
           <a class="ui youtube icon button">
             <i class="youtube icon"></i>
-          </a>
+          </a> -->
       </div>
     </div>
   </div>

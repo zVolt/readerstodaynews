@@ -73,7 +73,7 @@ class PostTypeSerializer(serializers.ModelSerializer):
         model = PostType
         fields = ('name', 'id')
 
-class PostListSerializer(serializers.ModelSerializer):
+class PostSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True)
     media_items = MediaSerializer(many=True)
     likes_count = serializers.SerializerMethodField(read_only=True)
@@ -93,7 +93,7 @@ class PostListSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'summary', 'source', 'tags', 'media_items', 'last_modified_on', 'likes_count', 'comments_count', 'post_type', 'share_count')
         validators = []
 
-class PostSerializer(serializers.ModelSerializer):
+class PostDetailSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True)
     media_items = MediaSerializer(many=True)
     comments = CommentSerializer(many=True)

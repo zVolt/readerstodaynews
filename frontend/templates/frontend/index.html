@@ -35,7 +35,9 @@
           <div class="ui stackable grid">
             <div class="stretched row">
               <div class="nine wide column">
-                  <img class="ui large image" :src="main_post.media_items[0].image" v-if="main_post.media_items.length"/>
+                  <a :href="'/post/'+main_post.id">
+                    <img class="ui large image" :src="main_post.media_items[0].image" v-if="main_post.media_items.length"/>
+                  </a>
                   <br/>
                   <div class="ui container">
                       <a class="ui label" v-for="tag in main_post.tags" :href="'/categories/' + tag.name">{{tag.name}}</a>
@@ -49,12 +51,14 @@
               </div>
               <div class="seven wide column">
                 <div class="ui container" v-for="post in primary_posts">
-                    <img class="ui large image" :src="post.media_items[0].image" v-if="post.media_items.length"/>
+                    <a :href="'/post/'+post.id"><img class="ui large image" :src="post.media_items[0].image" v-if="post.media_items.length"/></a>
                     <br/>
                     <div>
                         <a class="ui label" v-for="tag in post.tags" :href="'/categories/' + tag.name">{{tag.name}}</a>
                     </div>
+                    <br/>
                     <a class="ui huge header" :href="'/post/' + post.id">{{post.title}}</a>
+                    <br/>
                     <a href="#" class="ui mini compact icon button">{{post.likes_count}} <i class="thumbs up outline icon"></i> Like</a>
                     <a href="#" class="ui mini compact icon button">{{post.comments_count}} <i class="comments outline icon"></i> Comment</a>
                     <hr/>
@@ -79,12 +83,14 @@
         </div>
       </div>
       <div class="ui five wide column" v-for="post in old_posts">
-          <img class="ui large image" :src="post.media_items[0].image" v-if="post.media_items.length"/>
+          <a :href="'/post/'+post.id"><img class="ui large image" :src="post.media_items[0].image" v-if="post.media_items.length"/></a>
           <br/>
           <div>
               <a class="ui label" v-for="tag in post.tags" :href="'/categories/' + tag.name">{{tag.name}}</a>
           </div>
+          <br/>
           <a class="ui header" :href="'/post/' + post.id">{{post.title}}</a>
+          <br/>
           <a href="#" class="ui mini compact icon button">{{post.likes_count}} <i class="thumbs up outline icon"></i> Like</a>
           <a href="#" class="ui mini compact icon button">{{post.comments_count}} <i class="comments outline icon"></i> Comment</a>
         </div>

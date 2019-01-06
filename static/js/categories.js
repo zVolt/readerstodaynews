@@ -3,6 +3,7 @@ var app = new Vue({
     mixins: [utilMixin],
     data: {
         categories: [],
+        posts_by_cat: {},
     },
     created: function(){
         // name- visible name to user in loading text 
@@ -21,6 +22,21 @@ var app = new Vue({
     methods:{
         init: function(){
             console.log(this.categories)
+            this.categories.forEach(cat => {
+                this.load_posts(cat)
+            });
         },
+        load_posts: function(cat){
+            var vm = this
+            axios.get('/api/post/list?tags='+cat.name).then(
+                response => {
+                    console.log(response)
+                    vm.$set(vm.posts_by_cat, cat.id, response.data.results)
+                },
+                error => {
+                    console.log(error)
+                }
+            )
+        }
     }
 })
