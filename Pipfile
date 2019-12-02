@@ -1,0 +1,17 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+django = "*"
+whitenoise = "*"
+cloudinary = "*"
+dj-database-url = "*"
+djangorestframework = "*"
+gunicorn = "*"
+
+[requires]
+python_version = "3.6"
