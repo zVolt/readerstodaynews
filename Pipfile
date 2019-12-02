@@ -15,6 +15,7 @@ gunicorn = "*"
 psycopg2-binary = "*"
 django-filter = "*"
 firebase-admin = "*"
+jinja2 = "*"
 
 [requires]
 python_version = "3.6"
