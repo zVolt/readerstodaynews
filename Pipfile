@@ -6,7 +6,6 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-django = "*"
 whitenoise = "*"
 cloudinary = "*"
 dj-database-url = "*"
@@ -16,6 +15,7 @@ psycopg2-binary = "*"
 django-filter = "*"
 firebase-admin = "*"
 jinja2 = "*"
+django = "==2.2"
 
 [requires]
 python_version = "3.6"
