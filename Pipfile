@@ -12,6 +12,7 @@ cloudinary = "*"
 dj-database-url = "*"
 djangorestframework = "*"
 gunicorn = "*"
+psycopg2-binary = "*"
 
 [requires]
 python_version = "3.6"
