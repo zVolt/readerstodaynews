@@ -12,6 +12,7 @@ cloudinary = "*"
 dj-database-url = "*"
 djangorestframework = "*"
 gunicorn = "*"
+pysqlite3 = "*"
 
 [requires]
 python_version = "3.6"
