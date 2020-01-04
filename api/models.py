@@ -7,6 +7,7 @@ from cloudinary.models import CloudinaryField
 from django.conf import settings
 
 
+
 class MenuItem(models.Model):
     name = models.CharField(max_length=50)
     url = models.CharField(max_length=50)
