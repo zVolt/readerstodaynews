@@ -1,7 +1,6 @@
 from google.cloud import firestore
 import requests
 import json
-from repr import repr
 import datetime
 import cloudinary.uploader
 
@@ -43,7 +42,7 @@ for _ in range(50):
             print (repr(data.keys()))
             if data:
                 res = requests.post("http://localhost:8000/api/post/", json=[data])
-                print res.ok
+                print(res.ok)
 
 
 # DATABASE_URL=sqlite:////home/zeeshan/repos/readerstoday_backend/db.sqlite3
