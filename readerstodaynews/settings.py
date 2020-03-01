@@ -38,10 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders'
     'rest_framework',
     'rest_framework.authtoken',
     'api',
-    'frontend'
+    'frontend',
 ]
 
 MIDDLEWARE = [
@@ -53,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'readerstodaynews.urls'
@@ -170,3 +172,12 @@ CLOUDINARY = {
   'api_key': os.getenv('CLOUDINARY_API_KEY'),  
   'api_secret': os.getenv('CLOUDINARY_API_SECRET'),
 }
+
+CORS_ORIGIN_WHITELIST = [
+    "https://localhost:8000",
+    "https://127.0.0.1:8000",
+    "https://localhost:8080",
+    "https://127.0.0.1:8080",
+
+    "https://readertodaynewsfrontend.herokuapp.com",
+]
