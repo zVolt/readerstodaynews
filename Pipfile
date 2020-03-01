@@ -4,6 +4,9 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+pylint = "*"
+pylint-django = "*"
+black = "*"
 
 [packages]
 whitenoise = "*"
@@ -20,3 +23,6 @@ django-cors-headers = "*"
 
 [requires]
 python_version = "3.6"
+
+[pipenv]
+allow_prereleases = true
