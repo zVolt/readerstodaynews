@@ -13,7 +13,7 @@ var app = new Vue({
         this.loadv2([
             {
                 name: 'Categories',
-                url: '/api/tag/list',
+                url: '/api/category/list',
                 variableName: 'categories',
                 dataInReponse: ''
             },
@@ -28,7 +28,7 @@ var app = new Vue({
         },
         load_posts: function(cat){
             var vm = this
-            axios.get('/api/post/list?tags='+cat.name).then(
+            axios.get('/api/post/list?categories='+cat.name).then(
                 response => {
                     console.log(response)
                     vm.$set(vm.posts_by_cat, cat.id, response.data.results)

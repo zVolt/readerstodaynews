@@ -3,7 +3,7 @@ var app = new Vue({
     mixins: [utilMixin],
     data: {
         title: 'Readers Today News',
-        tags: [],
+        categories: [],
         main_post: {
           media_items: [ { image: undefined}]
         },
@@ -19,11 +19,11 @@ var app = new Vue({
     created: function(){
       this.get_posts()
       // this.posts_updated(posts)
-      this.get_tags()
+      this.get_categories()
     },
     computed: {
-      top_tags: function(){
-        return this.tags.slice(0, 6)
+      top_categories: function(){
+        return this.categories.slice(0, 6)
       }
     },
     methods: {
@@ -33,11 +33,11 @@ var app = new Vue({
         vm.primary_posts = all_posts.slice(1, 3)
         vm.old_posts = all_posts.slice(3)
       },
-      get_tags: function(){
+      get_categories: function(){
         var vm = this
-        axios.get('/api/tag/list').then(
+        axios.get('/api/category/list').then(
           response=>{
-            vm.tags = response.data
+            vm.categories = response.data
           },
           error=>{
             console.log(error)

@@ -5,6 +5,7 @@ from django.contrib.auth.models import User as BaseUser
 from django.db import models
 from cloudinary.models import CloudinaryField
 from django.conf import settings
+from django.utils.text import slugify
 
 
 class MenuItem(models.Model):
@@ -26,7 +27,7 @@ class MenuItem(models.Model):
         ordering = ("order",)
 
 
-class Tag(models.Model):
+class Category(models.Model):
     name = models.CharField(max_length=50)
     image = CloudinaryField("image", blank=True)
     priority = models.IntegerField(default=0)
@@ -68,7 +69,7 @@ class Media(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(BaseUser, on_delete=models.CASCADE)
     profile_pic = models.CharField(max_length=255)
-    interested_tags = models.ManyToManyField(Tag)
+    interested_categories = models.ManyToManyField(Category)
 
     def __str__(self):
         return self.user.username
@@ -105,6 +106,7 @@ class PostType(models.Model):
 
 class Post(models.Model):
     title = models.CharField(max_length=500)
+    slug = models.SlugField(unique=True)
     summary = models.TextField()
     content = models.TextField()
     post_type = models.ForeignKey(PostType, on_delete=models.CASCADE)
@@ -113,7 +115,7 @@ class Post(models.Model):
     last_modified_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE
     )
-    tags = models.ManyToManyField(Tag)
+    categories = models.ManyToManyField(Category)
     media_items = models.ManyToManyField(Media, blank=True)
     comments = models.ManyToManyField(Comment, blank=True)
     likes = models.ManyToManyField(UserProfile, blank=True)
@@ -121,3 +123,12 @@ class Post(models.Model):
 
     class Meta:
         ordering = ("last_modified_on",)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super(Post, self).save(*args, **kwargs)
+
+
+class Counter(models.Model):
+    type = models.CharField(max_length=100, unique=True)
+    count = models.CharField(max_length=100, default="2347234")

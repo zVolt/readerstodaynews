@@ -10,7 +10,7 @@ var posts = [{
         "id": 1
     },
     "content": "भाजपा से जुड़े एक संस्थान ने लोकसभा और राज्य विधानसभा चुनावों को एकसाथ कराये जाने को सबसे बड़ा सुधार करार देते हुए ‘एक राष्ट्र, एक चुनाव’ के मुद्दे पर अपने तरह के पहले राष्ट्रीय सेमिनार के आयोजन की आज घोषणा की।\r\n\r\nप्रधानमंत्री नरेंद्र मोदी एकसाथ चुनाव कराये जाने की लगातार हिमायत कर रहे हैं।\r\n\r\nभाजपा सांसद और पार्टी उपाध्यक्ष विनय सहस्त्रबुद्धे ने बताया कि रामभाऊ म्हाल्गी प्रबोधिनी (आरएमपी) 20-21 जनवरी को मुंबई में दो दिवसीय सम्मेलन का आयोजन करेगा। इसमें इस बात पर जोर दिया जाएगा कि एकसाथ लोकसभा और राज्य विधानसभा चुनावों के आयोजन से देश की विभिन्न चुनौतियों का समाधान निकल सकता है।\r\n\r\nआरएमपी के उपाध्यक्ष सहस्त्रबुद्धे ने कहा कि नीति आयोग एवं एक संसदीय समिति ने एक बार में चुनाव कराने की हिमायत की है और इस सम्मेलन से यह मुद्दा लोक विमर्श का विषय बनेगा।\r\n\r\nबयान में कहा गया है कि ‘एक राष्ट्र, एक चुनाव’ भारतीय लोकतंत्र का सबसे बड़ा सुधार साबित होगा।",
-    "tags": [
+    "categories": [
         {
             "name": "India",
             "id": 8
@@ -49,7 +49,7 @@ var posts = [{
         "follower_count": 1,
         "id": 1
     },
-    "tags": [
+    "categories": [
         {
             "name": "Bollywood",
             "id": 4
@@ -86,7 +86,7 @@ var posts = [{
         "follower_count": 1,
         "id": 1
     },
-    "tags": [
+    "categories": [
         {
             "name": "Bollywood",
             "id": 4
@@ -123,7 +123,7 @@ var posts = [{
         "follower_count": 1,
         "id": 1
     },
-    "tags": [
+    "categories": [
         {
             "name": "Politics",
             "id": 3
@@ -160,7 +160,7 @@ var posts = [{
         "follower_count": 1,
         "id": 1
     },
-    "tags": [
+    "categories": [
         {
             "name": "Trending",
             "id": 1
@@ -197,7 +197,7 @@ var posts = [{
         "follower_count": 1,
         "id": 1
     },
-    "tags": [
+    "categories": [
         {
             "name": "Celebrities",
             "id": 5
@@ -234,7 +234,7 @@ var posts = [{
         "follower_count": 1,
         "id": 1
     },
-    "tags": [
+    "categories": [
         {
             "name": "Trending",
             "id": 1
@@ -271,7 +271,7 @@ var posts = [{
         "follower_count": 1,
         "id": 1
     },
-    "tags": [
+    "categories": [
         {
             "name": "Bollywood",
             "id": 4
@@ -308,7 +308,7 @@ var posts = [{
         "follower_count": 1,
         "id": 1
     },
-    "tags": [
+    "categories": [
         {
             "name": "India",
             "id": 8
@@ -345,7 +345,7 @@ var posts = [{
         "follower_count": 1,
         "id": 1
     },
-    "tags": [
+    "categories": [
         {
             "name": "Bollywood",
             "id": 4
@@ -382,7 +382,7 @@ var posts = [{
         "follower_count": 1,
         "id": 1
     },
-    "tags": [
+    "categories": [
         {
             "name": "Celebrities",
             "id": 5
@@ -419,7 +419,7 @@ var posts = [{
         "follower_count": 1,
         "id": 1
     },
-    "tags": [
+    "categories": [
         {
             "name": "Celebrities",
             "id": 5
@@ -456,7 +456,7 @@ var posts = [{
         "follower_count": 1,
         "id": 1
     },
-    "tags": [
+    "categories": [
         {
             "name": "Trending",
             "id": 1
@@ -493,7 +493,7 @@ var posts = [{
         "follower_count": 1,
         "id": 1
     },
-    "tags": [
+    "categories": [
         {
             "name": "Trending",
             "id": 1
@@ -530,7 +530,7 @@ var posts = [{
         "follower_count": 1,
         "id": 1
     },
-    "tags": [
+    "categories": [
         {
             "name": "Trending",
             "id": 1
@@ -567,7 +567,7 @@ var posts = [{
         "follower_count": 1,
         "id": 1
     },
-    "tags": [
+    "categories": [
         {
             "name": "India",
             "id": 8
@@ -604,7 +604,7 @@ var posts = [{
         "follower_count": 1,
         "id": 1
     },
-    "tags": [
+    "categories": [
         {
             "name": "India",
             "id": 8
@@ -641,7 +641,7 @@ var posts = [{
         "follower_count": 1,
         "id": 1
     },
-    "tags": [
+    "categories": [
         {
             "name": "Celebrities",
             "id": 5
@@ -678,7 +678,7 @@ var posts = [{
         "follower_count": 1,
         "id": 1
     },
-    "tags": [
+    "categories": [
         {
             "name": "Celebrities",
             "id": 5
@@ -715,7 +715,7 @@ var posts = [{
         "follower_count": 1,
         "id": 1
     },
-    "tags": [
+    "categories": [
         {
             "name": "Bollywood",
             "id": 4

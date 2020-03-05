@@ -5,7 +5,18 @@ from django.contrib import admin
 from django.utils.safestring import mark_safe
 
 # Register your models here.
-from .models import *
+from .models import (
+    MenuItem,
+    Media,
+    Post,
+    PostType,
+    MediaType,
+    Category,
+    Comment,
+    UserProfile,
+    Source,
+    Counter,
+)
 import datetime
 
 
@@ -46,7 +57,7 @@ class PostAdmin(BaseAdmin):
         "last_modified_on",
     )
     search_fields = ("title", "summary")
-    list_filter = ("last_modified_on", "last_modified_by", "tags")
+    list_filter = ("last_modified_on", "last_modified_by", "categories")
     ordering = ["-last_modified_on"]
 
     def like_count(self, obj):
@@ -66,8 +77,8 @@ class MediaTypeAdmin(BaseAdmin):
     list_display = ("name",)
 
 
-@admin.register(Tag)
-class TagAdmin(BaseAdmin):
+@admin.register(Category)
+class CategoryAdmin(BaseAdmin):
     list_display = ("name", "image_thumbnail")
 
     def image_thumbnail(self, obj):
@@ -94,7 +105,7 @@ class UserProfileAdmin(BaseAdmin):
     )
 
     def interests(self, obj):
-        return ", ".join([t.name for t in obj.interested_tags.all()])
+        return ", ".join([t.name for t in obj.interested_categories.all()])
 
 
 @admin.register(Source)
@@ -110,3 +121,10 @@ class SourceAdmin(BaseAdmin):
                 url=obj.icon.url, width=50, height=50,
             )
         )
+
+@admin.register(Counter)
+class CounterAdmin(BaseAdmin):
+    list_display = (
+        "type",
+        "count",
+    )

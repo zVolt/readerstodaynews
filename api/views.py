@@ -3,33 +3,37 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse, JsonResponse
+from django.contrib.auth.models import User
+
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
-from django.http import HttpResponse, JsonResponse
-from .models import Post, Tag, UserProfile, Comment, MenuItem, Source
-from django.contrib.auth.models import User
-from .serializers import (
-    PostDetailSerializer,
-    PostSerializer,
-    TagSerializer,
-    CommentSerializer,
-    MenuSerializer,
-)
-from reprlib import repr
-
-# Create your views here.
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.generics import ListAPIView, ListCreateAPIView, CreateAPIView
 from rest_framework.pagination import LimitOffsetPagination
-import re
-
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
+from rest_framework import authentication
+from rest_framework.permissions import IsAuthenticated
+
 from firebase_admin import auth
-from rest_framework import authentication, permissions
+
+from reprlib import repr
+import re
 import json
+
+from .models import Post, Category, UserProfile, Comment, MenuItem, Source
+from .serializers import (
+    PostDetailSerializer,
+    PostSerializer,
+    CategorySerializer,
+    CommentSerializer,
+    MenuSerializer,
+    CounterSerializer,
+)
+from .permissions import ReadOnly
 
 
 class CustomAuthToken(ObtainAuthToken):
@@ -68,26 +72,28 @@ class CustomAuthToken(ObtainAuthToken):
 class MenuItemListView(ListCreateAPIView):
     queryset = MenuItem.objects.all()
     serializer_class = MenuSerializer
+    permission_classes = [IsAuthenticated | ReadOnly]
+
+    def get_serializer(self, *args, **kwargs):
+        if isinstance(kwargs.get("data", {}), list):
+            kwargs["many"] = True
+        return super().get_serializer(*args, **kwargs)
 
 
-class TagListView(ListCreateAPIView):
-    queryset = Tag.objects.all()
-    serializer_class = TagSerializer
-    pagination_class = None
+class CategoryListView(ListCreateAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    permission_classes = [IsAuthenticated | ReadOnly]
 
-    def post(self, request, format=None):
-        tags = []
-        data = JSONParser().parse(request)
-        serializer = TagSerializer(data=data, many=True)
-        if serializer.is_valid():
-            tags = serializer.save()
-        else:
-            print(serializer.errors)
-        return Response(tags)
+    def get_serializer(self, *args, **kwargs):
+        if isinstance(kwargs.get("data", {}), list):
+            kwargs["many"] = True
+        return super().get_serializer(*args, **kwargs)
 
 
 class PostListView(ListAPIView):
     pagination_class = LimitOffsetPagination
+    permission_classes = [IsAuthenticated | ReadOnly]
 
     def get_serializer_class(self):
         detailed = self.request.query_params.get("detailed", "false")
@@ -97,15 +103,15 @@ class PostListView(ListAPIView):
         return PostSerializer
 
     def get_queryset(self):
-        tags = self.request.query_params.get("tags", "")
+        categories = self.request.query_params.get("categories", "")
         sources = self.request.query_params.get("sources", "")
         ids = self.request.query_params.get("ids", "")
 
         query = Post.objects.all()
-        if tags:
-            tags = re.split(r"[\s,]+", tags)
-            tag_ids = [t.id for t in Tag.objects.filter(name__in=tags)]
-            query = query.filter(tags__in=tag_ids)
+        if categories:
+            categories = re.split(r"[\s,]+", categories)
+            category_ids = [t.id for t in Category.objects.filter(name__in=categories)]
+            query = query.filter(categories__in=category_ids)
 
         if sources:
             sources = re.split(r"[\s,]+", sources)
@@ -125,6 +131,7 @@ class SingleResultsSetPagination(LimitOffsetPagination):
 
 class PostView(APIView):
     serializer_class = PostDetailSerializer
+    permission_classes = [IsAuthenticated | ReadOnly]
 
     def get(self, request, format=None):
         ids = request.query_params.get("ids", "")
@@ -155,7 +162,7 @@ class PostView(APIView):
 
 class CommentCreateView(CreateAPIView):
     authentication_classes = (authentication.TokenAuthentication,)
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = [IsAuthenticated | ReadOnly]
 
     def post(self, request, format=None):
         data = request.body
@@ -186,7 +193,7 @@ class CommentCreateView(CreateAPIView):
 
 class LikeCreateView(CreateAPIView):
     authentication_classes = (authentication.TokenAuthentication,)
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = [IsAuthenticated | ReadOnly]
 
     def post(self, request, format=None):
         data = request.data
@@ -213,3 +220,13 @@ class LikeCreateView(CreateAPIView):
                 )
             )
         return Response(res)
+
+
+class CounterListAPIView(ListAPIView):
+    serializer_class = CounterSerializer
+    permission_classes = [IsAuthenticated | ReadOnly]
+
+    def get(self, request, *args, **kwargs):
+        object = self.get_object()
+        print(object)
+        return super().get(request, *args, **kwargs)

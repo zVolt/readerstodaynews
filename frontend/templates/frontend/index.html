@@ -40,7 +40,7 @@
                   </a>
                   <br/>
                   <div class="ui container">
-                      <a class="ui label" v-for="tag in main_post.tags" :href="'/categories/' + tag.name">{{tag.name}}</a>
+                      <a class="ui label" v-for="category in main_post.categories" :href="'/categories/' + category.name">{{category.name}}</a>
                   </div>
                   <a class="ui huge header" :href="'/post/' + main_post.id">{{main_post.title}}</a>
                   <div>
@@ -54,7 +54,7 @@
                     <a :href="'/post/'+post.id"><img class="ui large image" :src="post.media_items[0].image" v-if="post.media_items.length"/></a>
                     <br/>
                     <div>
-                        <a class="ui label" v-for="tag in post.tags" :href="'/categories/' + tag.name">{{tag.name}}</a>
+                        <a class="ui label" v-for="category in post.categories" :href="'/categories/' + category.name">{{category.name}}</a>
                     </div>
                     <br/>
                     <a class="ui huge header" :href="'/post/' + post.id">{{post.title}}</a>
@@ -69,15 +69,15 @@
         </div>
       </div>
       <div class="ui five wide column">
-        <!-- top news by tags-->
+        <!-- top news by categories-->
         <h4>Top categories</h4>
-        <div class="ui inverted segment cat_item" v-for="tag in top_tags"
+        <div class="ui inverted segment cat_item" v-for="category in top_categories"
         style="min-height: 90px; background-position: center;"
         :class="get_random_color_class()"
-        :style="'background-image: url('+tag.image+');'">
+        :style="'background-image: url('+category.image+');'">
           <div class="ui dimmer">
             <div class="content">
-              <div class="ui inverted header">{{tag.name}}</div>
+              <div class="ui inverted header">{{category.name}}</div>
             </div>
           </div>
         </div>
@@ -86,7 +86,7 @@
           <a :href="'/post/'+post.id"><img class="ui large image" :src="post.media_items[0].image" v-if="post.media_items.length"/></a>
           <br/>
           <div>
-              <a class="ui label" v-for="tag in post.tags" :href="'/categories/' + tag.name">{{tag.name}}</a>
+              <a class="ui label" v-for="category in post.categories" :href="'/categories/' + category.name">{{category.name}}</a>
           </div>
           <br/>
           <a class="ui header" :href="'/post/' + post.id">{{post.title}}</a>

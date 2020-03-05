@@ -1,5 +1,17 @@
 from rest_framework import serializers
-from .models import *
+from .models import (
+    Counter,
+    UserProfile,
+    MenuItem,
+    Category,
+    MediaType,
+    Source,
+    Media,
+    Comment,
+    PostType,
+    Post,
+    BaseUser,
+)
 import cloudinary
 
 
@@ -20,14 +32,20 @@ class MenuSerializer(serializers.ModelSerializer):
         model = MenuItem
         fields = ("name", "id", "url", "menu", "order")
 
+    def create(self, validated_data):
+        request = self.context.get("request")
+        return MenuItem.objects.create(
+            last_modified_by_id=request.user.id, **validated_data
+        )
 
-class TagSerializer(serializers.ModelSerializer):
+
+class CategorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Tag
+        model = Category
         fields = ("name", "id", "image")
 
     def to_representation(self, instance):
-        representation = super(TagSerializer, self).to_representation(instance)
+        representation = super(CategorySerializer, self).to_representation(instance)
         if instance.image:
             representation["image"] = instance.image.url
         return representation
@@ -86,7 +104,7 @@ class PostTypeSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
-    tags = TagSerializer(many=True)
+    categories = CategorySerializer(many=True)
     media_items = MediaSerializer(many=True)
     likes_count = serializers.SerializerMethodField(read_only=True)
     comments_count = serializers.SerializerMethodField(read_only=True)
@@ -101,13 +119,12 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        # fields = ('title', 'summary', 'content', 'source', 'tags', 'media_items', 'last_modified_on')
         fields = (
             "id",
             "title",
             "summary",
             "source",
-            "tags",
+            "categories",
             "media_items",
             "last_modified_on",
             "likes_count",
@@ -119,7 +136,7 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 class PostDetailSerializer(serializers.ModelSerializer):
-    tags = TagSerializer(many=True)
+    categories = CategorySerializer(many=True)
     media_items = MediaSerializer(many=True)
     comments = CommentSerializer(many=True)
     likes = UserProfileSerializer(many=True)
@@ -134,7 +151,7 @@ class PostDetailSerializer(serializers.ModelSerializer):
             "summary",
             "source",
             "content",
-            "tags",
+            "categories",
             "media_items",
             "last_modified_on",
             "likes",
@@ -144,10 +161,10 @@ class PostDetailSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        # Tags
-        tags_data = validated_data.pop("tags")
-        tags_names = [td.get("name") for td in tags_data]
-        tags = Tag.objects.filter(name__in=tags_names)
+        # Categorys
+        categories_data = validated_data.pop("categories")
+        categories_names = [td.get("name") for td in categories_data]
+        categories = Category.objects.filter(name__in=categories_names)
         # Modified by
         user = BaseUser.objects.get(pk=1)
 
@@ -169,6 +186,16 @@ class PostDetailSerializer(serializers.ModelSerializer):
         post = Post.objects.create(
             post_type=post_type, last_modified_by=user, source=source, **validated_data
         )
-        post.tags.set(tags)
+        post.categories.set(categories)
         post.media_items.set(media_items)
         return post
+
+
+class CounterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Counter
+        fields = (
+            "id",
+            "type",
+            "count",
+        )

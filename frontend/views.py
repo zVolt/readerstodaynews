@@ -2,13 +2,13 @@ from django.http import HttpResponse
 from django.conf import settings
 import os
 from django.template.loader import get_template
-from frontend.models import Counter
 import random
 
 random.seed(0)
 
 
 def get_count():
+    return 0
     counter = Counter.objects.first()
     if counter is None:
         counter = Counter.objects.create()
