@@ -12,7 +12,6 @@ from .models import (
     PostType,
     MediaType,
     Category,
-    Comment,
     UserProfile,
     Source,
     Counter,
@@ -52,19 +51,11 @@ class PostAdmin(BaseAdmin):
     list_display = (
         "summary",
         "title",
-        "like_count",
-        "comment_count",
         "last_modified_on",
     )
     search_fields = ("title", "summary")
     list_filter = ("last_modified_on", "last_modified_by", "categories")
     ordering = ["-last_modified_on"]
-
-    def like_count(self, obj):
-        return obj.likes.count()
-
-    def comment_count(self, obj):
-        return obj.comments.count()
 
 
 @admin.register(PostType)
@@ -87,14 +78,6 @@ class CategoryAdmin(BaseAdmin):
                 url=obj.image.url, width=50, height=50,
             )
         )
-
-
-@admin.register(Comment)
-class CommentAdmin(BaseAdmin):
-    list_display = (
-        "user",
-        "content",
-    )
 
 
 @admin.register(UserProfile)
@@ -121,6 +104,7 @@ class SourceAdmin(BaseAdmin):
                 url=obj.icon.url, width=50, height=50,
             )
         )
+
 
 @admin.register(Counter)
 class CounterAdmin(BaseAdmin):

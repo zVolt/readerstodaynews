@@ -20,6 +20,7 @@ firebase-admin = "*"
 jinja2 = "*"
 django = "==2.2.10"
 django-cors-headers = "*"
+django-rest-framework-social-oauth2 = "*"
 
 [requires]
 python_version = "3.6"

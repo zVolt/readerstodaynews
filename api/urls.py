@@ -1,15 +1,18 @@
-from django.conf.urls import url
+from django.urls import path
 from . import views
+from rest_framework.routers import SimpleRouter
+
+app_name = "api"
+
+router = SimpleRouter()
+router.register(r"menu", views.MenuViewSet, basename="menu")
+router.register(r"category", views.CategoryViewSet, basename="category")
+router.register(r"counter", views.CounterViewSet, basename="counter")
+router.register(r"source", views.SourceViewSet, basename="source")
+router.register(r"post", views.PostViewSet, basename="post")
+
 
 urlpatterns = [
-    url("auth/", views.CustomAuthToken.as_view()),
-
-    url("post/list", views.PostListView.as_view()),
-    url("post/", views.PostView.as_view()),
-    url("comment/", views.CommentCreateView.as_view()),
-    url("like/", views.LikeCreateView.as_view()),
-    url("category/list", views.CategoryListView.as_view()),
-    url("menu/<int:pk>", views.MenuItemListView.as_view()),
-    url("menu/list$", views.MenuItemListView.as_view(), name='menu-list'),
-    url("counter/", views.CounterListAPIView.as_view())
+    path("auth/", views.CustomAuthToken.as_view()),
 ]
+urlpatterns += router.urls
