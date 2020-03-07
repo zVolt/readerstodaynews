@@ -129,6 +129,7 @@ class BasicPostSerializer(serializers.ModelSerializer):
         model = Post
         fields = (
             "id",
+            "slug",
             "title",
             "summary",
             "source",
@@ -150,6 +151,7 @@ class FullPostSerializer(serializers.ModelSerializer):
         model = Post
         fields = (
             "id",
+            "slug",
             "title",
             "summary",
             "source",

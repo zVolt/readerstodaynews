@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY", "defaultsecretkey")
+SECRET_KEY = os.environ["SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "True") == "True"
@@ -40,11 +40,7 @@ INSTALLED_APPS = [
     "django_filters",
     "corsheaders",
     "rest_framework",
-    "oauth2_provider",
-    "social_django",
-    "rest_framework_social_oauth2",
     "api",
-    "frontend",
 ]
 
 MIDDLEWARE = [
@@ -72,17 +68,9 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "social_django.context_processors.backends",
-                "social_django.context_processors.login_redirect",
             ],
         },
-    },
-    {
-        "BACKEND": "django.template.backends.jinja2.Jinja2",
-        "DIRS": [os.path.join(BASE_DIR, "frontend", "templates", "frontend")],
-        "APP_DIRS": True,
-        "OPTIONS": {"environment": "readerstodaynews.jinja2.environment"},
-    },
+    }
 ]
 
 WSGI_APPLICATION = "readerstodaynews.wsgi.application"
@@ -149,25 +137,9 @@ REST_FRAMEWORK = {
     "PAGE_SIZE": 10,
     "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
     "DEFAULT_PERMISSION_CLASSES": ("api.permissions.ReadOnly",),
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "oauth2_provider.contrib.rest_framework.OAuth2Authentication",
-        "rest_framework_social_oauth2.authentication.SocialAuthentication",
-    ),
 }
 
-AUTHENTICATION_BACKENDS = (
-    # Google OAuth2
-    "social_core.backends.google.GoogleOAuth2",
-    
-    # Facebook OAuth2
-    "social_core.backends.facebook.FacebookAppOAuth2",
-    
-    "rest_framework_social_oauth2.backends.DjangoOAuth2",
-    "django.contrib.auth.backends.ModelBackend",
-)
-
-DRFSO2_PROPRIETARY_BACKEND_NAME = "Facebook"
-DRFSO2_URL_NAMESPACE = "oauth2"
+AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend",)
 
 # Cloudinary settings
 CLOUDINARY = {
@@ -182,23 +154,4 @@ CORS_ORIGIN_WHITELIST = [
     "http://127.0.0.1:8000",
     "http://127.0.0.1:8080",
     "https://readertodaynewsfrontend.herokuapp.com",
-]
-
-# Facebook configuration
-SOCIAL_AUTH_FACEBOOK_KEY = os.getenv("SOCIAL_AUTH_FACEBOOK_KEY")
-SOCIAL_AUTH_FACEBOOK_SECRET = os.getenv("SOCIAL_AUTH_FACEBOOK_SECRET")
-
-# Define SOCIAL_AUTH_FACEBOOK_SCOPE to get extra permissions from Facebook.
-# Email is not sent by default, to get it, you must request the email permission.
-SOCIAL_AUTH_FACEBOOK_SCOPE = ["email"]
-SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {"fields": "id, name, email"}
-
-# Google configuration
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY")
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET")
-
-# Define SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE to get extra permissions from Google.
-SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
-    "https://www.googleapis.com/auth/userinfo.email",
-    "https://www.googleapis.com/auth/userinfo.profile",
 ]

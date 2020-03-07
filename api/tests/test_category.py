@@ -31,7 +31,7 @@ class CategoryTest(APITestCase):
         category = Category.objects.create(
             name="cat1", last_modified_by=User.objects.all().first()
         )
-        url = reverse("api:category-detail", args=[category.id])
+        url = reverse("api:category-detail", args=[category.name])
         response = self.client.get(url, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertDictEqual(response.data, {"name": "cat1", "id": 1, "image": ""})

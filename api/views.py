@@ -88,6 +88,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = [IsAuthenticated | ReadOnly]
+    lookup_field = "name"
     filterset_fields = [
         "name",
     ]

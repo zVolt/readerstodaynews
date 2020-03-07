@@ -7,10 +7,13 @@
         "C:\\Users\\zkhan\\Downloads\\cmder\\vendor\\init_pipenv.bat"
     ],
     "python.terminal.activateEnvironment": false,
-    // "terminal.integrated.shellArgs.windows": [
-    //     "/k",
-    //     "pipenv shell"
-    // ],
-    "python.pythonPath": "C:\\Users\\zkhan\\.virtualenvs\\readerstodaynews-TlGEuazo\\Scripts\\python.exe",
-    "editor.formatOnSave": true
+    "terminal.integrated.shellArgs.linux": [
+        "-c",
+        "pipenv shell"
+    ],
+    "python.pythonPath": "/home/zeeshan/.local/share/virtualenvs/readerstodayapi-hV2Oifo3/bin/python",
+    "editor.formatOnSave": true,
+    "python.linting.pylintEnabled": true,
+    "python.linting.pycodestyleEnabled": false,
+    "python.linting.enabled": false
 }
