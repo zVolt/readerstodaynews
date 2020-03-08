@@ -98,9 +98,7 @@ class CounterViewSet(viewsets.ModelViewSet):
     queryset = Counter.objects.all()
     serializer_class = CounterSerializer
     permission_classes = [IsAuthenticated | ReadOnly]
-    filterset_fields = [
-        "type",
-    ]
+    lookup_field = "type"
 
 
 class SourceViewSet(viewsets.ModelViewSet):

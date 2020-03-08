@@ -49,8 +49,9 @@ class MediaAdmin(BaseAdmin):
 @admin.register(Post)
 class PostAdmin(BaseAdmin):
     list_display = (
-        "summary",
         "title",
+        "slug",
+        "summary",
         "last_modified_on",
     )
     search_fields = ("title", "summary")

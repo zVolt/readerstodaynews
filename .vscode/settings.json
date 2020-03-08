@@ -11,9 +11,16 @@
         "-c",
         "pipenv shell"
     ],
-    "python.pythonPath": "/home/zeeshan/.local/share/virtualenvs/readerstodayapi-hV2Oifo3/bin/python",
+    "python.pythonPath": "/home/zeeshan/.local/share/virtualenvs/readerstodaynews-s720Ksmu/bin/python",
     "editor.formatOnSave": true,
     "python.linting.pylintEnabled": true,
     "python.linting.pycodestyleEnabled": false,
-    "python.linting.enabled": false
+    "python.linting.enabled": false,
+    "sqltools.connections": [
+        {
+            "database": "${workspaceFolder}/db.sqlite3",
+            "dialect": "SQLite",
+            "name": "readerstodaynews"
+        }
+    ]
 }

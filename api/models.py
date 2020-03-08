@@ -6,6 +6,7 @@ from django.db import models
 from cloudinary.models import CloudinaryField
 from django.conf import settings
 from django.utils.text import slugify
+from indic_transliteration import sanscript
 
 
 class MenuItem(models.Model):
@@ -95,7 +96,7 @@ class PostType(models.Model):
 
 class Post(models.Model):
     title = models.CharField(max_length=500)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, blank=False, null=False)
     summary = models.TextField()
     content = models.TextField()
     post_type = models.ForeignKey(PostType, on_delete=models.CASCADE)
@@ -110,8 +111,18 @@ class Post(models.Model):
     class Meta:
         ordering = ("last_modified_on",)
 
+    def _create_slug(self):
+        slug = slugify(self.title)
+        if not slug:
+            en_title = sanscript.transliterate(
+                self.title, sanscript.DEVANAGARI, sanscript.HK
+            )
+            slug = slugify(en_title)
+        return slug
+
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.title)
+        if not self.slug:
+            self.slug = self._create_slug()
         super(Post, self).save(*args, **kwargs)
 
 
