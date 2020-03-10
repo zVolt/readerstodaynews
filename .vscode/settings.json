@@ -1,7 +1,6 @@
 {
     "python.formatting.blackPath": "black",
     "python.formatting.provider": "black",
-    "terminal.integrated.shell.windows": "C:\\WINDOWS\\System32\\cmd.exe",
     "terminal.integrated.shellArgs.windows": [
         "/K",
         "C:\\Users\\zkhan\\Downloads\\cmder\\vendor\\init_pipenv.bat"
