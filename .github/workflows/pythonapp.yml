@@ -1,6 +1,9 @@
 name: Django application
 
 on: 
+  push:
+    branches:
+      - master
   pull_request:
     branches: 
       - master
@@ -27,13 +30,11 @@ jobs:
         pipenv run flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         pipenv run flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Django Test
+    - name: Django Test and collect coverage
       env:
         SECRET_KEY: thisisasecret
         CLOUDINARY_CLOUD_NAME: mycloudname
       run: |
         pipenv run coverage run --source='.' manage.py test
-    - name: Collect test coverage
-      run: |
-        pipenv run coverage report
-        pipenv run codecov --token=0073250f-9ea0-4d00-9012-c084970ac0ae
+        pipenv run coverage xml
+        pipenv run codecov --token=${{ secrets.CODECOV_UPLOAD_TOKEN }} -f ./coverage.xml
