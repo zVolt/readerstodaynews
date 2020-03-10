@@ -5,14 +5,14 @@ from django.contrib.auth.models import User as BaseUser
 from django.db import models
 from cloudinary.models import CloudinaryField
 from django.conf import settings
+from django.utils.text import slugify
+from indic_transliteration import sanscript
 
 
 class MenuItem(models.Model):
     name = models.CharField(max_length=50)
     url = models.CharField(max_length=50)
-    menu = models.IntegerField(
-        default=0, choices=((0, "Main"), (1, "Secondary"))
-    )  # 0 primary, 1 secondary
+    menu = models.IntegerField(default=0, choices=((0, "Main"), (1, "Secondary")))
     order = models.IntegerField(default=0)  # 0 no order
     last_modified_on = models.DateTimeField(auto_now=True)
     last_modified_by = models.ForeignKey(
@@ -26,8 +26,8 @@ class MenuItem(models.Model):
         ordering = ("order",)
 
 
-class Tag(models.Model):
-    name = models.CharField(max_length=50)
+class Category(models.Model):
+    name = models.CharField(max_length=50, unique=True)
     image = CloudinaryField("image", blank=True)
     priority = models.IntegerField(default=0)
     last_modified_on = models.DateTimeField(auto_now=True)
@@ -40,7 +40,7 @@ class Tag(models.Model):
 
 
 class MediaType(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, unique=True)
     description = models.CharField(max_length=100)
     last_modified_on = models.DateTimeField(auto_now=True)
     last_modified_by = models.ForeignKey(
@@ -68,19 +68,10 @@ class Media(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(BaseUser, on_delete=models.CASCADE)
     profile_pic = models.CharField(max_length=255)
-    interested_tags = models.ManyToManyField(Tag)
+    interested_categories = models.ManyToManyField(Category)
 
     def __str__(self):
         return self.user.username
-
-
-class Comment(models.Model):
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    content = models.TextField()
-    last_modified_on = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return "%s: %s" % (self.user.user.username, self.content)
 
 
 class Source(models.Model):
@@ -94,7 +85,7 @@ class Source(models.Model):
 
 class PostType(models.Model):
     name = models.CharField(max_length=50)
-    last_modified_on = models.DateTimeField()
+    last_modified_on = models.DateTimeField(auto_now=True)
     last_modified_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE
     )
@@ -105,19 +96,36 @@ class PostType(models.Model):
 
 class Post(models.Model):
     title = models.CharField(max_length=500)
+    slug = models.SlugField(unique=True, blank=False, null=False)
     summary = models.TextField()
     content = models.TextField()
     post_type = models.ForeignKey(PostType, on_delete=models.CASCADE)
     source = models.ForeignKey(Source, on_delete=models.CASCADE)
-    last_modified_on = models.DateTimeField()
+    last_modified_on = models.DateTimeField(auto_now=True)
     last_modified_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE
     )
-    tags = models.ManyToManyField(Tag)
+    categories = models.ManyToManyField(Category, blank=True)
     media_items = models.ManyToManyField(Media, blank=True)
-    comments = models.ManyToManyField(Comment, blank=True)
-    likes = models.ManyToManyField(UserProfile, blank=True)
-    share_count = models.IntegerField(default=0)
 
     class Meta:
         ordering = ("last_modified_on",)
+
+    def _create_slug(self):
+        slug = slugify(self.title)
+        if not slug:
+            en_title = sanscript.transliterate(
+                self.title, sanscript.DEVANAGARI, sanscript.HK
+            )
+            slug = slugify(en_title)
+        return slug
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = self._create_slug()
+        super(Post, self).save(*args, **kwargs)
+
+
+class Counter(models.Model):
+    type = models.CharField(max_length=100, unique=True)
+    count = models.CharField(max_length=100, default="2347234")

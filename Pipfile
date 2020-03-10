@@ -7,6 +7,10 @@ verify_ssl = true
 pylint = "*"
 pylint-django = "*"
 black = "*"
+pytest = "*"
+coverage = "*"
+codecov = "*"
+flake8 = "*"
 
 [packages]
 whitenoise = "*"
@@ -20,9 +24,11 @@ firebase-admin = "*"
 jinja2 = "*"
 django = "==2.2.10"
 django-cors-headers = "*"
+django-rest-framework-social-oauth2 = "*"
+indic-transliteration = "*"
 
 [requires]
-python_version = "3.6"
+python_version = "3.7.6"
 
 [pipenv]
 allow_prereleases = true

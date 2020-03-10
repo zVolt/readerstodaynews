@@ -1,0 +1,25 @@
+{
+    "python.formatting.blackPath": "black",
+    "python.formatting.provider": "black",
+    "terminal.integrated.shellArgs.windows": [
+        "/K",
+        "C:\\Users\\zkhan\\Downloads\\cmder\\vendor\\init_pipenv.bat"
+    ],
+    "python.terminal.activateEnvironment": false,
+    "terminal.integrated.shellArgs.linux": [
+        "-c",
+        "pipenv shell"
+    ],
+    "python.pythonPath": "C:\\Users\\zkhan\\.virtualenvs\\readerstodaynews-TlGEuazo\\Scripts\\python.exe",
+    "editor.formatOnSave": true,
+    "python.linting.pylintEnabled": true,
+    "python.linting.pycodestyleEnabled": false,
+    "python.linting.enabled": false,
+    "sqltools.connections": [
+        {
+            "database": "${workspaceFolder}/db.sqlite3",
+            "dialect": "SQLite",
+            "name": "readerstodaynews"
+        }
+    ]
+}

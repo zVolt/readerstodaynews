@@ -13,7 +13,7 @@ for _ in range(50):
     p = next(posts)
     data = p.to_dict()
     data["summary"] = data["excerpt"] or data["title"] or data["content"][:30]
-    data["tags"] = [dict(name=x) for x in ["new", "trending"]]
+    data["categories"] = [dict(name=x) for x in ["new", "trending"]]
     image_url = data["feature_img"]
     print (image_url)
     if image_url:
