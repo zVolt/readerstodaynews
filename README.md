@@ -1,0 +1,1 @@
+# readerstodaynews ![Django application](https://github.com/zVolt/readerstodaynews/workflows/Django%20application/badge.svg) [![codecov](https://codecov.io/gh/zkhan93/readerstodaynews/branch/master/graph/badge.svg)](https://codecov.io/gh/zkhan93/readerstodaynews)
