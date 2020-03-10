@@ -30,6 +30,7 @@ jobs:
     - name: Django Test
       env:
         SECRET_KEY: thisisasecret
+        CLOUDINARY_CLOUD_NAME: mycloudname
       run: |
         pipenv run coverage run --source='.' manage.py test
     - name: Collect test coverage

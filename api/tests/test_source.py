@@ -15,8 +15,8 @@ class SourceTest(APITestCase):
         create_user()
 
     def test_fetch_multiple_counter(self):
-        Source.objects.create(name="a", icon="123")
-        Source.objects.create(name="b", icon="123")
+        Source.objects.create(name="a")
+        Source.objects.create(name="b")
         url = reverse("api:source-list")
         response = self.client.get(url, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
