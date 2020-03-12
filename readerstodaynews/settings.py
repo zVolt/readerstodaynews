@@ -137,6 +137,8 @@ REST_FRAMEWORK = {
     "PAGE_SIZE": 10,
     "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
     "DEFAULT_PERMISSION_CLASSES": ("api.permissions.ReadOnly",),
+    "DEFAULT_THROTTLE_CLASSES": ["rest_framework.throttling.AnonRateThrottle",],
+    "DEFAULT_THROTTLE_RATES": {"anon": "1000/day"},
 }
 
 AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend",)
@@ -158,3 +160,4 @@ CORS_ORIGIN_WHITELIST = [
     "https://readertodaynewsfrontend.herokuapp.com",
     "https://readersapi.herokuapp.com",
 ]
+
