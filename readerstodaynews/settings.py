@@ -159,5 +159,5 @@ CORS_ORIGIN_WHITELIST = [
     "https://localhost",
     "https://readertodaynewsfrontend.herokuapp.com",
     "https://readersapi.herokuapp.com",
+    "https://readerstoday.in",
 ]
-
