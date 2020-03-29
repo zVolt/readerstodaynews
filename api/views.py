@@ -17,8 +17,6 @@ from rest_framework.generics import (
     RetrieveAPIView,
 )
 from rest_framework.pagination import LimitOffsetPagination
-from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework import authentication, viewsets, status, mixins
 from rest_framework.permissions import IsAuthenticated
@@ -29,7 +27,7 @@ from reprlib import repr
 import re
 import json
 
-from .models import Post, Category, UserProfile, MenuItem, Source, Counter
+from .models import Post, Category, UserProfile, MenuItem, Source, Counter, Media
 from .serializers import (
     FullPostSerializer,
     BasicPostSerializer,
@@ -38,41 +36,9 @@ from .serializers import (
     SourceSerializer,
     MenuSerializer,
     CounterSerializer,
+    MediaSerializer,
 )
 from .permissions import ReadOnly
-
-
-class CustomAuthToken(ObtainAuthToken):
-    def post(self, request, *args, **kwargs):
-        id_token = request.data.get("token")
-        decoded_token = auth.verify_id_token(id_token)
-        uid = decoded_token["uid"]
-        auth_user = auth.get_user(uid)
-        name, email, photo_url = (
-            auth_user.display_name,
-            auth_user.email,
-            auth_user.photo_url,
-        )
-        user = User.objects.filter(email=email).first()
-        user_profile = UserProfile.objects.filter(user=user).first() if user else None
-        res = {}
-        if not user_profile:
-            username = email.split("@")[0]
-            user = User.objects.create(
-                username=username, first_name=name, email=email, password=""
-            )
-            user.save()
-            user_profile = UserProfile(user=user, profile_pic=photo_url)
-            user_profile.save()
-        if user and user_profile:
-            token, created = Token.objects.get_or_create(user=user_profile.user)
-            res["user_id"] = user_profile.pk
-            res["email"] = user_profile.user.email
-            res["username"] = user_profile.user.username
-            res["name"] = user_profile.user.get_full_name()
-            res["photo_url"] = user_profile.profile_pic
-            res["token"] = token.key
-        return Response(res)
 
 
 class MenuViewSet(viewsets.ModelViewSet):
@@ -82,6 +48,8 @@ class MenuViewSet(viewsets.ModelViewSet):
     filterset_fields = [
         "menu",
     ]
+    search_fields = ["name"]
+    ordering_fields = ["order"]
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -92,6 +60,8 @@ class CategoryViewSet(viewsets.ModelViewSet):
     filterset_fields = [
         "name",
     ]
+    search_fields = ["name"]
+    ordering_fields = ["priority"]
 
 
 class CounterViewSet(viewsets.ModelViewSet):
@@ -110,8 +80,10 @@ class SourceViewSet(viewsets.ModelViewSet):
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     permission_classes = [IsAuthenticated | ReadOnly]
-    filterset_fields = ["categories__name", "source__name", "post_type__name"]
     lookup_field = "slug"
+    filterset_fields = ["categories__name", "source__name", "post_type__name", "slug"]
+    search_fields = ["title", "content", "slug"]
+    ordering_fields = ["last_modified_on"]
 
     def get_serializer_class(self):
         if self.action == "list":
@@ -120,3 +92,14 @@ class PostViewSet(viewsets.ModelViewSet):
             return CreatePostSerializer
         else:
             return FullPostSerializer
+
+
+class MediaViewSet(viewsets.ModelViewSet):
+    queryset = Media.objects.all()
+    serializer_class = MediaSerializer
+    permission_classes = [IsAuthenticated | ReadOnly]
+    filterset_fields = [
+        "media_type",
+    ]
+    search_fields = ["media_type"]
+    ordering_fields = ["title", "last_modified_on"]
