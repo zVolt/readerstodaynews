@@ -10,9 +10,8 @@ router.register(r"category", views.CategoryViewSet, basename="category")
 router.register(r"counter", views.CounterViewSet, basename="counter")
 router.register(r"source", views.SourceViewSet, basename="source")
 router.register(r"post", views.PostViewSet, basename="post")
+router.register(r"media", views.MediaViewSet, basename="media")
 
 
-urlpatterns = [
-    path("auth/", views.CustomAuthToken.as_view()),
-]
+urlpatterns = []
 urlpatterns += router.urls

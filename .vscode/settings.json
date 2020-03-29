@@ -10,7 +10,7 @@
         "-c",
         "pipenv shell"
     ],
-    "python.pythonPath": "C:\\Users\\zkhan\\.virtualenvs\\readerstodaynews-TlGEuazo\\Scripts\\python.exe",
+    "python.pythonPath": "/home/zeeshan/.local/share/virtualenvs/readerstodaynews-s720Ksmu/bin/python",
     "editor.formatOnSave": true,
     "python.linting.pylintEnabled": true,
     "python.linting.pycodestyleEnabled": false,
