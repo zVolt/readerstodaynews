@@ -47,7 +47,7 @@ class CategorySerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super(CategorySerializer, self).to_representation(instance)
         if instance.image:
-            representation["image"] = instance.image.url
+            representation["image"] = instance.image.build_url(secure=True)
         return representation
 
     def create(self, validated_data):
@@ -97,7 +97,7 @@ class MediaSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super(MediaSerializer, self).to_representation(instance)
         if instance.image:
-            representation["image"] = instance.image.url
+            representation["image"] = instance.image.build_url(secure=True)
         return representation
 
     def create(self, validated_data):
